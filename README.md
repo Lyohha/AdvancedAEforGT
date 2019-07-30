@@ -1,7 +1,7 @@
 # Advanced AE for GT
 
 ## About
-Advanced AE for GT - it`s addon for Minecraft mod Applied Energistics 2.
+Advanced AE for GT - it`s addon for Minecraft [1.7.10] mod Applied Energistics 2.
 This addon add blocks:
 * MultiBlock ME Interface for automation Assembly Line;
 * Advanced ME Storage Interface for extract more items from ME Network;
