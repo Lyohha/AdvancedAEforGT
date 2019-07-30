@@ -1,0 +1,82 @@
+/*
+ * This file is part of Applied Energistics 2.
+ * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
+ *
+ * Applied Energistics 2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Applied Energistics 2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ */
+
+apply plugin: 'forge'
+
+apply from: 'gradle/scripts/dependencies.gradle'
+apply from: 'gradle/scripts/autoinstallruntime.gradle'
+apply from: 'gradle/scripts/integration.gradle'
+apply from: 'gradle/scripts/optional.gradle'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+version = "0.1.4.1"
+group = "aae"
+archivesBaseName = "advancedae"
+
+// If TeamCity is running this build, lets set the version info
+if (hasProperty("teamcity")) {
+    version = teamcity["build.number"]
+
+    // Fix for main branch being built
+    version = version.replaceAll("/", "-")
+}
+
+// Add Coremod Manifest
+jar {
+
+    // specify which files are really included, can control which APIs should be in
+    include "ua/**"
+    include "assets/**"
+}
+
+minecraft {
+    version = minecraft_version + "-" + forge_version
+
+    runDir = "run"
+}
+
+processResources {
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version': project.version, 'mcversion': minecraft_version
+    }
+}

@@ -1,0 +1,11 @@
+tile.advancedstoragemeinterface.name=Advanced ME Storage Interface
+tile.MultiblockMEInterfaceHatch.name=MultiBlock ME Interface Hatch
+tile.MultiblockMEInterfaceController.name=MultiBlock ME Interface Controller
+tile.AdvancedPatternTerminal.name=Advanced Pattern Terminal
+
+tile.advancedstoragemeinterface.container.name=Advanced ME Storage Interface
+tile.AdvancedPatternTerminal.container.name=Advanced Pattern Terminal
+tile.MultiblockMEInterfaceController.container.name=MultiBlock ME Interface
+
+item.EncodedAdvancedPattern.name=Encoded Advanced Pattern
+
