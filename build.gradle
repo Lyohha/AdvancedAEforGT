@@ -47,7 +47,7 @@ buildscript {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-version = "0.1.4.1"
+version = "0.1.5.1"
 group = "aae"
 archivesBaseName = "advancedae"
 
@@ -64,7 +64,7 @@ jar {
 
     // specify which files are really included, can control which APIs should be in
     include "ua/**"
-    include "assets/**"
+    include "assets/aae/**"
 }
 
 minecraft {

@@ -22,7 +22,7 @@ public class AdvancedAE {
     public static final String modid = "aae";
     public static final String modname = "Advanced AE for GT";
     private static final int build = 1;
-    public static final String version = "0.1.4." + build;
+    public static final String version = "0.1.5." + build;
 
     //not used now
     //public static final Logger logger = LogManager.getLogger("Advanced AE for GT");

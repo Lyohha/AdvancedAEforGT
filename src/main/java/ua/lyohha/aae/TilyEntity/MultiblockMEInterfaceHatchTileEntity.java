@@ -105,7 +105,7 @@ public class MultiblockMEInterfaceHatchTileEntity extends TileEntity implements 
                         }
                     }
                 }
-                if (entity instanceof IInventory) {
+                else if (entity instanceof IInventory) {
                     if (((IInventory) entity).getSizeInventory() > 0 && ((IInventory) entity).getInventoryStackLimit() >= stack.stackSize) {
                         int size = ((IInventory) entity).getSizeInventory();
                         for (int i = 0; i < size; i++) {
