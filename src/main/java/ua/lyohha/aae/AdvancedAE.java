@@ -25,7 +25,7 @@ public class AdvancedAE {
     public static final String version = "0.1.5." + build;
 
     //not used now
-    //public static final Logger logger = LogManager.getLogger("Advanced AE for GT");
+    //public static final Logger logger = LogManager.getLogger(modname);
 
     @Mod.Instance(AdvancedAE.modid)
     public static AdvancedAE instance;
