@@ -103,22 +103,21 @@ public class AdvancedStorageMEInterfaceTileEntity extends TileEntity implements 
         IMEMonitor<IAEItemStack> itemInv = storage.getItemInventory();
         if (itemStacks[cycleExport + 36] == null) {
             AEItemStack request = (AEItemStack) AEItemStack.create(itemStacks[cycleExport].copy()).setStackSize(itemStacks[cycleExport].getMaxStackSize());
-            //AEItemStack request = AEItemStack.create(new ItemStack(itemStacks[cycleExport].getItem(), itemStacks[cycleExport].getMaxStackSize(), itemStacks[cycleExport].getItemDamage()));
             request = (AEItemStack) itemInv.extractItems(request, Actionable.SIMULATE, new MachineSource(this));
             if (request == null)
                 return;
-            //request.getItemStack().stackSize;
             request = (AEItemStack) itemInv.extractItems(request, Actionable.MODULATE, new MachineSource(this));
             itemStacks[cycleExport + 36] = request.getItemStack();
         } else {
-            //AEItemStack request = AEItemStack.create(new ItemStack(itemStacks[cycleExport].getItem(), itemStacks[cycleExport].getMaxStackSize() - itemStacks[cycleExport + 36].stackSize, itemStacks[cycleExport].getItemDamage()));
             AEItemStack request = (AEItemStack)AEItemStack.create(itemStacks[cycleExport].copy()).setStackSize(itemStacks[cycleExport + 36].getMaxStackSize() - itemStacks[cycleExport + 36].stackSize);;
             request = (AEItemStack) itemInv.extractItems(request, Actionable.SIMULATE, new MachineSource(this));
             if (request == null)
                 return;
             request = (AEItemStack) itemInv.extractItems(request, Actionable.MODULATE, new MachineSource(this));
-            //itemStacks[cycleExport + 36] = new ItemStack(request.getItemStack().getItem(), request.getItemStack().stackSize + itemStacks[cycleExport + 36].stackSize, request.getItemDamage());
-            itemStacks[cycleExport + 36] = request.getItemStack();
+            ItemStack stack = request.getItemStack();
+            stack.stackSize = stack.stackSize + itemStacks[cycleExport + 36].stackSize;
+
+            itemStacks[cycleExport + 36] = stack;
         }
 
 
@@ -205,7 +204,6 @@ public class AdvancedStorageMEInterfaceTileEntity extends TileEntity implements 
 
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        //return slot > 35 && isItemValidForSlot(slot, stack);
         return isItemValidForSlot(slot, stack);
     }
 
@@ -232,36 +230,20 @@ public class AdvancedStorageMEInterfaceTileEntity extends TileEntity implements 
 
     @Override
     public ItemStack decrStackSize(int slot, int amount) {
-        // AdvancedAE.logger.info("Decr slot " + slot + " amount " + amount);
-        //AdvancedAE.logger.info("Decr 1");
         ItemStack itemStackInSlot = getStackInSlot(slot);
-        //AdvancedAE.logger.info("Decr 2");
         if (slot < 36) {
-            // AdvancedAE.logger.info("Decr 3");
             itemStacks[slot] = null;
-            // AdvancedAE.logger.info("Decr 4");
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            //AdvancedAE.logger.info("Decr 5");
-            //return new ItemStack(itemStackInSlot.getItem(), 0, itemStackInSlot.getItemDamage());
-
             return null;
         }
-        // AdvancedAE.logger.info("Decr 6");
         if (itemStackInSlot != null) {
-            // AdvancedAE.logger.info("Decr 7");
             if (itemStackInSlot.stackSize <= amount) {
-                //   AdvancedAE.logger.info("Decr 8");
                 setInventorySlotContents(slot, null);
-                // AdvancedAE.logger.info("Decr 9");
             } else {
-                //  AdvancedAE.logger.info("Decr 10");
                 itemStackInSlot = itemStackInSlot.splitStack(amount);
-                //  AdvancedAE.logger.info("Decr 11");
             }
         }
-        // AdvancedAE.logger.info("Decr 12");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        // AdvancedAE.logger.info("Decr 13");
         return itemStackInSlot;
 
     }
@@ -308,40 +290,25 @@ public class AdvancedStorageMEInterfaceTileEntity extends TileEntity implements 
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        // AdvancedAE.logger.info("Valid slot " + slot);
-        // AdvancedAE.logger.info("Valid 1");
         if (slot < 36) {
-            // AdvancedAE.logger.info("Valid 2");
             if (itemStacks[slot + 36] == null) {
-                //  AdvancedAE.logger.info("Valid 3");
                 itemStacks[slot] = stack.copy();
                 itemStacks[slot].stackSize = 1;
-                //itemStacks[slot] = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
-                // AdvancedAE.logger.info("Valid 4");
             }
-            //  AdvancedAE.logger.info("Valid 5");
             return false;
         }
-        //  AdvancedAE.logger.info("Valid 6");
         if (itemStacks[slot] == null) {
-            // AdvancedAE.logger.info("Valid 7");
             if (itemStacks[slot - 36] == null) {
-                // AdvancedAE.logger.info("Valid 8");
                 return true;
             }
             if (itemStacks[slot - 36].getItem() == stack.getItem() && itemStacks[slot - 36].getItemDamage() == stack.getItemDamage()) {
-                //  AdvancedAE.logger.info("Valid 9");
                 return true;
             }
-            // AdvancedAE.logger.info("Valid 10");
             return false;
         }
-        // AdvancedAE.logger.info("Valid 11");
         if (stack.getItem() == itemStacks[slot].getItem() && itemStacks[slot].getItemDamage() == stack.getItemDamage()) {
-            // AdvancedAE.logger.info("Valid 12");
             return true;
         }
-        // AdvancedAE.logger.info("Valid 13");
         return false;
     }
 
@@ -350,7 +317,6 @@ public class AdvancedStorageMEInterfaceTileEntity extends TileEntity implements 
 
     private IGridNode getNode(ForgeDirection dir) {
         if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-            //AdvancedAE.logger.info("Error Client");
             return null;
         }
         IGridNode node = getGridNode(dir);
@@ -363,9 +329,7 @@ public class AdvancedStorageMEInterfaceTileEntity extends TileEntity implements 
 
     @Override
     public IGridNode getGridNode(ForgeDirection dir) {
-        //AdvancedAE.logger.info("Try Get Grid Node");
         if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-            //AdvancedAE.logger.info("Error Client");
             return null;
         }
         if (this.isFirstGetGridNode) {
@@ -373,9 +337,6 @@ public class AdvancedStorageMEInterfaceTileEntity extends TileEntity implements 
             if (this.node == null)
                 this.node = AEApi.instance().createGridNode(gridBlock);
         }
-        //node.updateState();
-        //isConnected = true;
-        //AdvancedAE.logger.info("Get Grid Node Successful");
         return this.node;
     }
 
