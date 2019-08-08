@@ -2,7 +2,10 @@
 
 ## About
 Advanced AE for GT - it`s addon for Minecraft [1.7.10] mod Applied Energistics 2.
-Please don't use this mod, because he crushed game if using Advanced Pattern in MultiBlock ME Interface.
+
+##Important
+This mod not work this official Applied Energistics 2. For using need fixed version.
+[Applied Energistics 2 Unofficial](https://github.com/Lyohha/Applied-Enerhistics-2-Unofficial-rv3-1.7.10)
 
 This addon add blocks:
 * MultiBlock ME Interface for automation Assembly Line;
