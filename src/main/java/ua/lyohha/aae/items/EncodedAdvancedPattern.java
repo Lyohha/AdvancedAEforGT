@@ -22,16 +22,13 @@ import java.util.List;
 
 public class EncodedAdvancedPattern extends Item implements ICraftingPatternItem {
 
-    private ItemStack out = null;
-
     public EncodedAdvancedPattern() {
         this.setCreativeTab(CreativeTab.instance);
         this.setUnlocalizedName("EncodedAdvancedPattern");
         this.setTextureName("aae:EncodedAdvancedPattern");
         this.setMaxStackSize(1);
 
-        if(Platform.isClient())
-        {
+        if (Platform.isClient()) {
             MinecraftForgeClient.registerItemRenderer(this, new EncodedAdvancedPatternRender());
         }
     }
@@ -76,20 +73,12 @@ public class EncodedAdvancedPattern extends Item implements ICraftingPatternItem
         return new AdvancedPatternHelper(is).decode();
     }
 
-    public ItemStack getItemRender(ItemStack stack)
-    {
-        if(out == null)
-        {
-            World w = CommonHelper.proxy.getWorld();
-            if(w == null)
-                return null;
-            ICraftingPatternDetails details = getPatternForItem(stack, w);
-            if(details == null)
-                return null;
-            out = details.getCondensedOutputs()[0].getItemStack();
-        }
+    public ItemStack getItemRender(ItemStack stack) {
+        World w = CommonHelper.proxy.getWorld();
+        if(w == null)
+            return null;
 
-        return out;
+        return new AdvancedPatternHelper(stack).getOut();
     }
 
     @Override

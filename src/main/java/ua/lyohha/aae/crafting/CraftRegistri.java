@@ -17,6 +17,6 @@ public class CraftRegistri {
         CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(AdvancedAEBlocks.advancedPatternTerminal, 1), new Object[]{" X ", "ZYZ", "ZZZ", ('X'), "craftingWorkBench", ('Y'), "chestWood", ('Z'), "ingotIron"}));
         CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(AdvancedAEBlocks.multiblockMEInterfaceHatch, 1), new Object[]{"   ", "TZT", "TTT", ('Z'), "craftingPiston", ('T'), "ingotIron"}));
         CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(AdvancedAEBlocks.multiblockMEInterfaceController, 1), new Object[]{"X X", "YZY", "X X", ('Z'), "chestWood", ('Y'), "circuitAdvanced", ('X'), "ingotIron"}));
-
+        GameRegistry.addShapelessRecipe(new ItemStack(AdvancedAEBlocks.advancedStorageMEInterface), new Object[]{AdvancedAEBlocks.advancedStorageMEInterface});
     }
 }

@@ -58,6 +58,20 @@ public class AdvancedPatternHelper implements ICraftingPatternDetails, Comparabl
         return this;
     }
 
+    public ItemStack getOut() {
+        NBTTagCompound encodedValue = patternItem.getTagCompound();
+        if (encodedValue == null)
+            return null;
+        NBTTagList outTag = encodedValue.getTagList("out", 10);
+
+        ItemStack out = null;
+        if (outTag.tagCount() > 0)
+            out = ItemStack.loadItemStackFromNBT(outTag.getCompoundTagAt(0));
+
+
+        return out;
+    }
+
     @Override
     public ItemStack getPattern() {
         return null;

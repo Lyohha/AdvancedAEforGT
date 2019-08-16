@@ -21,7 +21,7 @@ public class AdvancedAE {
     //Mod Info
     public static final String modid = "aae";
     public static final String modname = "Advanced AE for GT";
-    private static final int build = 2;
+    private static final int build = 3;
     public static final String version = "0.1.5." + build;
 
     //not used now
