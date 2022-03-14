@@ -6,6 +6,7 @@ import io.netty.buffer.ByteBuf;
 public class Message implements IMessage {
 
     private MessageType type;
+    public int priority;
 
     public Message()
     {
@@ -16,6 +17,11 @@ public class Message implements IMessage {
     {
         this.type = type;
     }
+    public Message(MessageType type, int priority)
+    {
+        this.type = type;
+        this.priority = priority;
+    }
 
     public MessageType getMessageType()
     {
@@ -25,19 +31,24 @@ public class Message implements IMessage {
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        type = MessageType.values()[buf.readInt()];
+        this.type = MessageType.values()[buf.readInt()];
+        if(this.type == MessageType.SET_PRIORITY)
+            this.priority = buf.readInt();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeInt(type.ordinal());
+        buf.writeInt(this.type.ordinal());
+        if(this.type == MessageType.SET_PRIORITY)
+            buf.writeInt(this.priority);
     }
 
     public enum MessageType
     {
         NONE,
         CLEAR_PATTERN,
-        CREATE_PATTERN
+        CREATE_PATTERN,
+        SET_PRIORITY
     }
 }
 

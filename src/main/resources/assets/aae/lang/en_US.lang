@@ -7,5 +7,10 @@ tile.advancedstoragemeinterface.container.name=Advanced ME Storage Interface
 tile.AdvancedPatternTerminal.container.name=Advanced Pattern Terminal
 tile.MultiblockMEInterfaceController.container.name=MultiBlock ME Interface
 
+item.PartGregTechStorageBus.container.name=GregTech Storage Bus
+item.PartExportMEInterface.container.name=Export ME Interface
+
 item.EncodedAdvancedPattern.name=Encoded Advanced Pattern
+item.PartGregTechStorageBus.name=GregTech Storage Bus
+item.PartExportMEInterface.name=Export ME Interface
 

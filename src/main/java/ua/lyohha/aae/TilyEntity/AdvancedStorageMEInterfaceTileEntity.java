@@ -79,9 +79,10 @@ public class AdvancedStorageMEInterfaceTileEntity extends TileEntity implements 
                 itemStacks[cycleImport + 36] = null;
             } else {
                 int notAdded = request.getItemStack().stackSize;
-                request = AEItemStack.create(itemStacks[cycleImport + 36].copy().splitStack(itemStacks[cycleImport + 36].copy().stackSize - notAdded));
+                request = AEItemStack.create(itemStacks[cycleImport + 36].copy().splitStack(itemStacks[cycleImport + 36].stackSize - notAdded));
                 itemInv.injectItems(request, Actionable.MODULATE, new MachineSource(this));
-                itemStacks[cycleImport + 36] = itemStacks[cycleImport + 36].copy().splitStack(notAdded);
+//                itemStacks[cycleImport + 36] = itemStacks[cycleImport + 36].copy().splitStack(notAdded);
+                itemStacks[cycleImport + 36].splitStack(notAdded);
             }
         }
     }

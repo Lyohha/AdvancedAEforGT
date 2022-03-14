@@ -94,9 +94,9 @@ public class MultiblockMEInterfaceHatchTileEntity extends TileEntity implements 
                     continue;
                 if (entity instanceof ISidedInventory) {
                     if (((ISidedInventory) entity).getSizeInventory() > 0 && ((ISidedInventory) entity).getInventoryStackLimit() >= stack.stackSize) {
-                        int[] slots = ((ISidedInventory) entity).getAccessibleSlotsFromSide(getSide(f));
+                        int[] slots = ((ISidedInventory) entity).getAccessibleSlotsFromSide(f.getOpposite().ordinal());
                         for (int i : slots) {
-                            if (((ISidedInventory) entity).canInsertItem(i, stack, getSide(f)))
+                            if (((ISidedInventory) entity).canInsertItem(i, stack, f.getOpposite().ordinal()))
                                 if (((ISidedInventory) entity).getStackInSlot(i) == null) {
                                     inventory = ((ISidedInventory) entity);
                                     inventorySlot = i;
@@ -121,26 +121,6 @@ public class MultiblockMEInterfaceHatchTileEntity extends TileEntity implements 
             }
         }
         return false;
-    }
-
-    private int getSide(ForgeDirection f) {
-
-        switch (f) {
-            case UP:
-                return 0;
-            case SOUTH:
-                return 3;
-            case EAST:
-                return 5;
-            case DOWN:
-                return 1;
-            case NORTH:
-                return 2;
-            case WEST:
-                return 4;
-            default:
-                return 6;
-        }
     }
 
     @Override

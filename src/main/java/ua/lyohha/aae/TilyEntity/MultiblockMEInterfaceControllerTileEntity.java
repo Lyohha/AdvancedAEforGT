@@ -12,12 +12,10 @@ import appeng.api.networking.events.MENetworkCraftingPatternChange;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
 import appeng.api.networking.storage.IStorageGrid;
-import appeng.api.networking.ticking.ITickManager;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
 import appeng.util.item.AEItemStack;
-import com.sun.istack.internal.NotNull;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -29,19 +27,14 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.Sys;
 import ua.lyohha.aae.ae2.MultiblockMEInterfaceControllerGridBlock;
 import ua.lyohha.aae.blocks.AdvancedAEBlocks;
 import ua.lyohha.aae.grid.Grid;
 import ua.lyohha.aae.interfaces.MultiblockMEInterfaceHatchInterface;
 import ua.lyohha.aae.interfaces.NodeInterface;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MultiblockMEInterfaceControllerTileEntity extends TileEntity implements ISidedInventory, IActionHost, ICraftingProvider {
 

@@ -15,7 +15,7 @@ public class Network {
 
     public static void preInit()
     {
-        network = NetworkRegistry.INSTANCE.newSimpleChannel("AdvancedAR");
+        network = NetworkRegistry.INSTANCE.newSimpleChannel("AdvancedAE");
         network.registerMessage(MessageHandler.class, Message.class, 0, Side.SERVER);
     }
 }

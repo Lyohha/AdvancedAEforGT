@@ -16,67 +16,129 @@
  * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-apply plugin: 'forge'
-
-apply from: 'gradle/scripts/dependencies.gradle'
-apply from: 'gradle/scripts/autoinstallruntime.gradle'
-apply from: 'gradle/scripts/integration.gradle'
-apply from: 'gradle/scripts/optional.gradle'
-
 buildscript {
     repositories {
-        mavenLocal()
         mavenCentral()
-
         maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            name 'forge'
+            url 'https://maven.minecraftforge.net'
         }
-
         maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+        maven {
+            url = "https://jitpack.io"
+        }
     }
 
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.0.+') {
+            changing = true
+        }
     }
 }
+
+repositories {
+    maven {
+        name = "maven"
+        url = "https://repo1.maven.org/maven2"
+    }
+    maven {
+        name "OpenMods Extras"
+        url 'http://repo.openmods.info/artifactory/fireball-cache'
+    }
+    maven {
+        url "https://cursemaven.com"
+    }
+    maven {
+        url "https://repo.openmods.info/artifactory/openmods/"
+    }
+    maven {
+        name = "jitpack.io"
+        url = "https://jitpack.io"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+    maven {
+        name 'ic2'
+        url 'http://maven.ic2.player.to/'
+        metadataSources {
+            mavenPom()
+            artifact()
+        }
+    }
+}
+
+apply plugin: 'forge'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-version = "0.1.5.3"
-group = "aae"
-archivesBaseName = "advancedae"
+//================================================
+// Dependencies
 
-// If TeamCity is running this build, lets set the version info
-if (hasProperty("teamcity")) {
-    version = teamcity["build.number"]
+dependencies {
 
-    // Fix for main branch being built
-    version = version.replaceAll("/", "-")
+    compile('net.industrial-craft:industrialcraft-2:2.2.827-experimental:dev')
+    implementation files('lib/appliedenergistics2-rv3-beta-18-dev.jar')
+     implementation files('lib/gregtech-5.09.31-dev.jar')
+//    compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.40.35:dev')
+//    compile('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-76-GTNH:dev')
 }
 
-// Add Coremod Manifest
-jar {
+version = mc_ver + "-" + mod_version
 
-    // specify which files are really included, can control which APIs should be in
-    include "ua/**"
-    include "assets/aae/**"
-}
-
+// Setup Forge plugin
 minecraft {
-    version = minecraft_version + "-" + forge_version
+    version = mc_ver + "-" + forge_ver + '-' + mc_ver
+    runDir = 'run'
 
-    runDir = "run"
+    replaceIn "ua/lyohha/aae/AdvancedAE.java"
+    replace '$VERSION$', mod_version
 }
 
 processResources {
-    // replace stuff in mcmod.info, nothing else
+    inputs.property "version", rootProject.mod_version
+
+    // Process mcmod.info
     from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        expand 'version': project.version, 'mcversion': minecraft_version
+        include '**/*.info'
+        expand 'version':mod_version,'MCVersion':mc_ver
     }
+
+    // Copy anything else directly
+    from(sourceSets.main.resources.srcDirs) {
+        exclude '**/*.info'
+    }
+}
+
+//================================================
+// Jar tasks
+
+// Generate FML Coremod manifest
+ext.fmlManifest = manifest {}
+
+jar {
+    manifest {
+        from fmlManifest
+    }
+
+    include "ua/**"
+    include "assets/**"
+    include "mcmod.info"
+}
+
+// Dev jar
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    manifest {
+        from fmlManifest
+    }
+}
+
+artifacts {
+    archives deobfJar
 }
