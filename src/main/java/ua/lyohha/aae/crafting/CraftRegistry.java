@@ -85,7 +85,7 @@ public class CraftRegistry {
                             new ItemStack(AdvancedAEItems.partExportMEInterface, 1),
                             new Object[]{"CMI", "   ", "   ",
                                     ('M'), new ItemStack(meIterface, 1),
-                                    ('C'), new ItemStack(gregComponents, 1, 32683),
+                                    ('C'), new ItemStack(gregComponents, 1, 32633),
                                     ('I'), "circuitData"
                             }
                     )
