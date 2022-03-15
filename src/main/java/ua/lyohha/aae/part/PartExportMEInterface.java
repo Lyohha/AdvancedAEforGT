@@ -493,6 +493,10 @@ public class PartExportMEInterface implements IPowerChannelState, IGridTickable,
             return;
 
         this.gridBlock = new ExportMEInterfaceGridBlock(this);
+
+        if(this.host != null)
+            this.gridBlock.setGridColor(this.host.getColor());
+
         this.node = AEApi.instance().createGridNode(this.gridBlock);
         if (this.node != null) {
             if (this.owner != null)
@@ -515,8 +519,6 @@ public class PartExportMEInterface implements IPowerChannelState, IGridTickable,
         this.host = iPartHost;
         this.tile = tileEntity;
         this.hostTile = tileEntity;
-        
-        this.gridBlock.setGridColor(iPartHost.getColor());
 
         setPower(null);
     }
