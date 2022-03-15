@@ -1,6 +1,5 @@
 package ua.lyohha.aae.blocks;
 
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class AdvancedAEBlocks

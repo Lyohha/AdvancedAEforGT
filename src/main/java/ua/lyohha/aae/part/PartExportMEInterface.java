@@ -515,6 +515,9 @@ public class PartExportMEInterface implements IPowerChannelState, IGridTickable,
         this.host = iPartHost;
         this.tile = tileEntity;
         this.hostTile = tileEntity;
+        
+        this.gridBlock.setGridColor(iPartHost.getColor());
+
         setPower(null);
     }
 

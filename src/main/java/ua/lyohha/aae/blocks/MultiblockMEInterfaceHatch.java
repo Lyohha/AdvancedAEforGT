@@ -1,6 +1,8 @@
 package ua.lyohha.aae.blocks;
 
 import appeng.core.CreativeTab;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -28,6 +30,7 @@ public class MultiblockMEInterfaceHatch extends BlockContainer {
         return new MultiblockMEInterfaceHatchTileEntity();
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {

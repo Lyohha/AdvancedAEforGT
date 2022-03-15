@@ -53,6 +53,11 @@ public class ExportMEInterfaceGridBlock implements IGridBlock
 
     }
 
+
+    public void setGridColor(AEColor color) {
+        this.color = color;
+    }
+
     @Override
     public void setNetworkStatus(IGrid grid, int channelsInUse) {
         this.grid = grid;

@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import ua.lyohha.aae.AdvancedAE;
 import ua.lyohha.aae.blocks.AdvancedAEBlocks;
 import ua.lyohha.aae.items.AdvancedAEItems;
 
@@ -31,20 +32,23 @@ public class CraftRegistry {
     }
 
     public void MCStyleRegistry() {
-//        CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(AdvancedAEBlocks.advancedStorageMEInterface, 1), new Object[]{"XYX", "TZT", "TYT", ('X'), "chestWood", ('Y'), "circuitAdvanced", ('Z'), "craftingPiston", ('T'), "ingotIron"}));
         CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(AdvancedAEBlocks.advancedStorageMEInterface, 1), new Object[]{"XYX", "TZT", "TYT", ('X'), "chestWood", ('Y'), "circuitAdvanced", ('Z'), "craftingPiston", ('T'), "ingotIron"}));
         CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(AdvancedAEBlocks.advancedPatternTerminal, 1), new Object[]{" X ", "ZYZ", "ZZZ", ('X'), "craftingWorkBench", ('Y'), "chestWood", ('Z'), "ingotIron"}));
         CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(AdvancedAEBlocks.multiblockMEInterfaceHatch, 1), new Object[]{"   ", "TZT", "TTT", ('Z'), "craftingPiston", ('T'), "ingotIron"}));
         CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(AdvancedAEBlocks.multiblockMEInterfaceController, 1), new Object[]{"X X", "YZY", "X X", ('Z'), "chestWood", ('Y'), "circuitAdvanced", ('X'), "ingotIron"}));
         GameRegistry.addShapelessRecipe(new ItemStack(AdvancedAEBlocks.advancedStorageMEInterface), new Object[]{AdvancedAEBlocks.advancedStorageMEInterface});
-//        GameRegistry.addShapelessRecipe(new ItemStack(AdvancedAEItems.partGregTechStorageBus), new Object[]{"item.ItemBasicStorageCell.64k"});
-//        CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(AdvancedAEItems.partGregTechStorageBus, 1), new Object[]{"XY ", "   ", "   ", ('X'), "item.ItemBasicStorageCell.64k",('Y'), "craftingPiston"}));
 
         FMLControlledNamespacedRegistry<Item> itemRegistry = GameData.getItemRegistry();
         FMLControlledNamespacedRegistry<Block> blockRegistry = GameData.getBlockRegistry();
 
         Item gregComponents = itemRegistry.getObject("gregtech:gt.metaitem.01");
         Block meIterface = blockRegistry.getObject("appliedenergistics2:tile.BlockInterface");
+
+        if(gregComponents == null)
+            AdvancedAE.logger.error("Not Found GregTech Components");
+
+        if(meIterface == null)
+            AdvancedAE.logger.error("Not Found AE2 Components");
 
         if(gregComponents != null && meIterface != null) {
             GameRegistry.addRecipe
@@ -78,7 +82,7 @@ public class CraftRegistry {
             GameRegistry.addRecipe
             (
                     new ShapedOreRecipe(
-                            new ItemStack(AdvancedAEItems.partGregTechStorageBus, 1),
+                            new ItemStack(AdvancedAEItems.partExportMEInterface, 1),
                             new Object[]{"CMI", "   ", "   ",
                                     ('M'), new ItemStack(meIterface, 1),
                                     ('C'), new ItemStack(gregComponents, 1, 32683),

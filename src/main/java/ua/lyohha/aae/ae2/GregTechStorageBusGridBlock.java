@@ -48,6 +48,10 @@ public class GregTechStorageBusGridBlock implements IGridBlock
         return this.color == null ? AEColor.Transparent : this.color;
     }
 
+    public void setGridColor(AEColor color) {
+        this.color = color;
+    }
+
     @Override
     public void onGridNotification(GridNotification notification) {
 

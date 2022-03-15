@@ -13,15 +13,10 @@ import appeng.api.storage.ICellContainer;
 import appeng.api.storage.IMEInventory;
 import appeng.api.storage.IMEInventoryHandler;
 import appeng.api.storage.StorageChannel;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
 import appeng.api.util.DimensionalCoord;
 import appeng.helpers.IPriorityHost;
-import appeng.tile.inventory.AppEngInternalAEInventory;
-import appeng.tile.inventory.IAEAppEngInventory;
-import appeng.tile.inventory.InvOperation;
 import appeng.util.prioitylist.PrecisePriorityList;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -74,7 +69,6 @@ public class PartGregTechStorageBus implements IPowerChannelState, IPart, IGridH
 
     public PartGregTechStorageBus(ItemStack is) {
         this.is = is;
-        AdvancedAE.logger.info("new object");
         hash = Double.toString(Math.random());
     }
 
@@ -118,7 +112,6 @@ public class PartGregTechStorageBus implements IPowerChannelState, IPart, IGridH
 
     @MENetworkEventSubscribe
     public void updateChannels(MENetworkChannelsChanged channel) {
-//        logs.info("updateChannels");
         IGridNode node = getGridNode();
         if (node != null) {
             boolean isNowActive = node.isActive();
@@ -134,7 +127,6 @@ public class PartGregTechStorageBus implements IPowerChannelState, IPart, IGridH
 
     @MENetworkEventSubscribe
     public void powerChange(MENetworkPowerStatusChange event) {
-//        logs.info("powerChange");
         IGridNode node = getGridNode();
         if (node != null) {
             boolean isNowActive = node.isActive();
@@ -268,7 +260,6 @@ public class PartGregTechStorageBus implements IPowerChannelState, IPart, IGridH
 
     @Override
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
-        AdvancedAE.logger.info("writeToNBT");
         if (this.node != null) {
             NBTTagCompound nodeTag = new NBTTagCompound();
             this.node.saveToNBT("node0", nodeTag);
@@ -280,13 +271,11 @@ public class PartGregTechStorageBus implements IPowerChannelState, IPart, IGridH
 
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        AdvancedAE.logger.info("readFromNBT");
         if (nbtTagCompound.hasKey("node") && this.node != null) {
             this.node.loadFromNBT("node0", nbtTagCompound.getCompoundTag("node"));
             this.node.updateState();
         }
         this.priority = nbtTagCompound.getInteger("priority");
-//        AdvancedAE.logger.info(this.priority);
         this.Config.readFromNBT(nbtTagCompound, "config");
         this.onNeighborChanged();
     }
@@ -363,9 +352,10 @@ public class PartGregTechStorageBus implements IPowerChannelState, IPart, IGridH
         if (FMLCommonHandler.instance().getEffectiveSide().isClient())
             return;
 
-        AdvancedAE.logger.info("addToWorld");
-
         this.gridBlock = new GregTechStorageBusGridBlock(this);
+        if(this.host != null)
+            this.gridBlock.setGridColor(this.host.getColor());
+
         this.node = AEApi.instance().createGridNode(this.gridBlock);
         if (this.node != null) {
             if (this.owner != null)
@@ -388,12 +378,12 @@ public class PartGregTechStorageBus implements IPowerChannelState, IPart, IGridH
         this.host = iPartHost;
         this.tile = tileEntity;
         this.hostTile = tileEntity;
+
         setPower(null);
     }
 
     @Override
     public boolean onActivate(EntityPlayer entityPlayer, Vec3 vec3) {
-        AdvancedAE.logger.info(this.hash + " onActivate");
         entityPlayer.openGui(AdvancedAE.instance, GuiHandler.GUIID_GREGTECH_STORAGE_BUS << 4 | (this.side.ordinal()), this.hostTile.getWorldObj(), this.hostTile.xCoord, this.hostTile.yCoord, this.hostTile.zCoord);
         return true;
     }
@@ -498,7 +488,6 @@ public class PartGregTechStorageBus implements IPowerChannelState, IPart, IGridH
         if(this.handler != null)
             this.handler.setPriority(i);
         this.priority = i;
-        AdvancedAE.logger.info("setPriority" + this.priority);
         this.getHost().markForSave();
     }
 

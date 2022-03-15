@@ -23,7 +23,7 @@ import ua.lyohha.aae.proxy.CommonProxy;
 
 import java.util.Set;
 
-@Mod(modid = AdvancedAE.modid, version = AdvancedAE.version, name = AdvancedAE.modname, dependencies = "after:waila;required-after:appliedenergistics2")
+@Mod(modid = AdvancedAE.modid, version = AdvancedAE.version, name = AdvancedAE.modname, dependencies = "after:waila;required-after:appliedenergistics2;required-after:gregtech")
 public class AdvancedAE {
     //Mod Info
     public static final String modid = "aae";
