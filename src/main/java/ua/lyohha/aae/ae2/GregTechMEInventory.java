@@ -12,6 +12,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
+//import gregtech.common.tileentities.storage.;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import ua.lyohha.aae.AdvancedAE;
@@ -32,6 +34,7 @@ public class GregTechMEInventory implements IMEInventory<IAEItemStack> {
         if (target instanceof BaseMetaTileEntity) {
             IMetaTileEntity metaTileEntity = ((BaseMetaTileEntity) target).getMetaTileEntity();
 
+            // quantum chest
             if (metaTileEntity instanceof GT_MetaTileEntity_QuantumChest) {
                 GT_MetaTileEntity_QuantumChest chest = (GT_MetaTileEntity_QuantumChest) metaTileEntity;
                 ItemStack is = iaeStack.getItemStack();
@@ -116,6 +119,93 @@ public class GregTechMEInventory implements IMEInventory<IAEItemStack> {
                     }
                 }
             }
+
+//             super chest
+            if (metaTileEntity instanceof GT_MetaTileEntity_SuperChest) {
+                GT_MetaTileEntity_SuperChest chest = (GT_MetaTileEntity_SuperChest) metaTileEntity;
+                ItemStack is = iaeStack.getItemStack();
+                if (actionable == Actionable.SIMULATE) {
+
+                    if (chest.mItemStack == null) {
+                        long count = iaeStack.getStackSize() - chest.getMaxItemCount();
+                        if (count < 0) return null;
+                        return iaeStack.copy().setStackSize(count);
+                    } else {
+                        if (GT_Utility.areStacksEqual(is, chest.mItemStack)) {
+                            long count = iaeStack.getStackSize() - (chest.getMaxItemCount() - chest.mItemCount);
+                            if (count < 0) return null;
+                            return iaeStack.copy().setStackSize(count);
+                        } else if (chest.mInventory[0] == null || chest.mInventory[1] == null) {
+                            long count = iaeStack.getStackSize() - is.getMaxStackSize();
+                            if (count < 0) return null;
+                            return iaeStack.copy().setStackSize(count);
+                        } else if (GT_Utility.areStacksEqual(is, chest.mInventory[0])) {
+                            long count = iaeStack.getStackSize() - (is.getMaxStackSize() - chest.mInventory[0].stackSize);
+                            if (count < 0) return null;
+                            return iaeStack.copy().setStackSize(count);
+                        } else if (GT_Utility.areStacksEqual(is, chest.mInventory[1])) {
+                            long count = iaeStack.getStackSize() - (is.getMaxStackSize() - chest.mInventory[1].stackSize);
+                            if (count < 0) return null;
+                            return iaeStack.copy().setStackSize(count);
+                        }
+                    }
+
+                } else {
+
+                    if (chest.mItemStack == null) {
+                        int insert = Math.min((int) iaeStack.getStackSize(), chest.getMaxItemCount());
+
+                        chest.mItemStack = is.copy();
+                        chest.mItemCount = insert;
+
+                        long count = iaeStack.getStackSize() - chest.getMaxItemCount();
+                        if (count < 0) return null;
+                        return iaeStack.copy().setStackSize(count);
+                    } else {
+                        if (GT_Utility.areStacksEqual(is, chest.mItemStack)) {
+                            int insert = Math.min((int) iaeStack.getStackSize(), chest.getMaxItemCount() - chest.mItemCount);
+
+                            chest.mItemCount += insert;
+
+                            long count = iaeStack.getStackSize() - (chest.getMaxItemCount() - chest.mItemCount);
+                            if (count < 0) return null;
+                            return iaeStack.copy().setStackSize(count);
+                        } else if (chest.mInventory[0] == null) {
+                            int insert = Math.min((int) iaeStack.getStackSize(), is.getMaxStackSize());
+
+                            chest.mInventory[0] = is.copy();
+                            chest.mInventory[0].stackSize = insert;
+
+                            long count = iaeStack.getStackSize() - is.getMaxStackSize();
+                            if (count < 0) return null;
+                            return iaeStack.copy().setStackSize(count);
+                        } else if (chest.mInventory[1] == null) {
+                            int insert = Math.min((int) iaeStack.getStackSize(), is.getMaxStackSize());
+
+                            chest.mInventory[1] = is.copy();
+                            chest.mInventory[1].stackSize = insert;
+
+                            long count = iaeStack.getStackSize() - is.getMaxStackSize();
+                            if (count < 0) return null;
+                            return iaeStack.copy().setStackSize(count);
+                        } else if (GT_Utility.areStacksEqual(is, chest.mInventory[0])) {
+
+                            chest.mInventory[0].stackSize += Math.min((int) iaeStack.getStackSize(), chest.mInventory[0].getMaxStackSize() - chest.mInventory[0].stackSize);
+
+                            long count = iaeStack.getStackSize() - (chest.mInventory[0].getMaxStackSize() - chest.mInventory[0].stackSize);
+                            if (count < 0) return null;
+                            return iaeStack.copy().setStackSize(count);
+                        } else if (GT_Utility.areStacksEqual(is, chest.mInventory[1])) {
+                            chest.mInventory[1].stackSize += Math.min((int) iaeStack.getStackSize(), chest.mInventory[1].getMaxStackSize() - chest.mInventory[1].stackSize);
+
+                            long count = iaeStack.getStackSize() - (chest.mInventory[1].getMaxStackSize() - chest.mInventory[1].stackSize);
+                            if (count < 0) return null;
+                            return iaeStack.copy().setStackSize(count);
+                        }
+                    }
+                }
+            }
+
         }
 
         return iaeStack.copy();
@@ -129,6 +219,60 @@ public class GregTechMEInventory implements IMEInventory<IAEItemStack> {
 
             if (metaTileEntity instanceof GT_MetaTileEntity_QuantumChest) {
                 GT_MetaTileEntity_QuantumChest chest = (GT_MetaTileEntity_QuantumChest) metaTileEntity;
+                ItemStack is = iaeStack.getItemStack();
+                if (actionable == Actionable.SIMULATE) {
+
+                    // first check in main buffer
+                    if (GT_Utility.areStacksEqual(is, chest.mItemStack)) {
+                        return iaeStack.copy().setStackSize(Math.min(is.stackSize, chest.mItemCount));
+                    }
+                    // check top slot
+                    else if (GT_Utility.areStacksEqual(is, chest.mInventory[0])) {
+                        return iaeStack.copy().setStackSize(Math.min(is.stackSize, chest.mInventory[0].stackSize));
+                    }
+                    // check bottom slot
+                    else if (GT_Utility.areStacksEqual(is, chest.mInventory[1])) {
+                        return iaeStack.copy().setStackSize(Math.min(is.stackSize, chest.mInventory[1].stackSize));
+                    }
+                } else {
+
+
+                    if (GT_Utility.areStacksEqual(is, chest.mItemStack)) {
+                        // TODO пересчет количества, чтобы с нижнего слота достать мог
+                        int count = Math.min(is.stackSize, chest.mItemCount);
+
+                        chest.mItemCount -= count;
+                        if (chest.mItemCount <= 0)
+                            chest.mItemStack = null;
+
+                        return iaeStack.copy().setStackSize(count);
+                    }
+                    // check top slot
+                    else if (GT_Utility.areStacksEqual(is, chest.mInventory[0])) {
+                        int count = Math.min(is.stackSize, chest.mInventory[0].stackSize);
+
+                        chest.mInventory[0].stackSize -= count;
+                        if (chest.mInventory[0].stackSize <= 0)
+                            chest.mInventory[0] = null;
+
+                        return iaeStack.copy().setStackSize(count);
+                    }
+                    // check bottom slot
+                    else if (GT_Utility.areStacksEqual(is, chest.mInventory[1])) {
+                        int count = Math.min(is.stackSize, chest.mInventory[1].stackSize);
+
+                        chest.mInventory[1].stackSize -= count;
+                        if (chest.mInventory[1].stackSize <= 0)
+                            chest.mInventory[1] = null;
+
+                        return iaeStack.copy().setStackSize(count);
+                    }
+                }
+            }
+
+            // super chest
+            if (metaTileEntity instanceof GT_MetaTileEntity_SuperChest) {
+                GT_MetaTileEntity_SuperChest chest = (GT_MetaTileEntity_SuperChest) metaTileEntity;
                 ItemStack is = iaeStack.getItemStack();
                 if (actionable == Actionable.SIMULATE) {
 
@@ -207,8 +351,23 @@ public class GregTechMEInventory implements IMEInventory<IAEItemStack> {
                 if (chest.mInventory[1] != null) {
                     iItemList.add(AEItemStack.create(chest.mInventory[1].copy()));
                 }
+            }
+            if (metaTileEntity instanceof GT_MetaTileEntity_SuperChest) {
+                GT_MetaTileEntity_SuperChest chest = (GT_MetaTileEntity_SuperChest) metaTileEntity;
+                // inside buffer
+                if (chest.mItemStack != null) {
+                    ItemStack qunatum = chest.mItemStack.copy();
+                    qunatum.stackSize = chest.mItemCount;
 
+                    iItemList.add(AEItemStack.create(qunatum));
+                }
 
+                if (chest.mInventory[0] != null) {
+                    iItemList.add(AEItemStack.create(chest.mInventory[0].copy()));
+                }
+                if (chest.mInventory[1] != null) {
+                    iItemList.add(AEItemStack.create(chest.mInventory[1].copy()));
+                }
             }
         }
 
@@ -219,4 +378,5 @@ public class GregTechMEInventory implements IMEInventory<IAEItemStack> {
     public StorageChannel getChannel() {
         return StorageChannel.ITEMS;
     }
+
 }

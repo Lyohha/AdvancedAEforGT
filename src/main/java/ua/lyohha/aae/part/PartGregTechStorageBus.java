@@ -22,8 +22,8 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
+//import net.minecraft.client.renderer.RenderBlocks;
+//import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -149,8 +149,8 @@ public class PartGregTechStorageBus implements IPowerChannelState, IPart, IGridH
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void renderInventory(IPartRenderHelper rh, RenderBlocks renderer) {
-        Tessellator ts = Tessellator.instance;
+    public void renderInventory(IPartRenderHelper rh, net.minecraft.client.renderer.RenderBlocks renderer) {
+        net.minecraft.client.renderer.Tessellator ts = net.minecraft.client.renderer.Tessellator.instance;
 
         IIcon side = TextureManager.getInstance().StorageBus1Side;
         rh.setTexture(side, side, TextureManager.getInstance().StorageBus1Back, TextureManager.getInstance().StorageBus1Front, side, side);
@@ -188,8 +188,8 @@ public class PartGregTechStorageBus implements IPowerChannelState, IPart, IGridH
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void renderStatic(int x, int y, int z, IPartRenderHelper rh, RenderBlocks renderer) {
-        Tessellator ts = Tessellator.instance;
+    public void renderStatic(int x, int y, int z, IPartRenderHelper rh, net.minecraft.client.renderer.RenderBlocks renderer) {
+        net.minecraft.client.renderer.Tessellator ts = net.minecraft.client.renderer.Tessellator.instance;
 
         IIcon side = TextureManager.getInstance().StorageBus1Side;
         rh.setTexture(side, side, TextureManager.getInstance().StorageBus1Back, TextureManager.getInstance().StorageBus1Front, side, side);
@@ -234,7 +234,7 @@ public class PartGregTechStorageBus implements IPowerChannelState, IPart, IGridH
     }
 
     @Override
-    public void renderDynamic(double v, double v1, double v2, IPartRenderHelper iPartRenderHelper, RenderBlocks renderBlocks) {
+    public void renderDynamic(double v, double v1, double v2, IPartRenderHelper iPartRenderHelper, net.minecraft.client.renderer.RenderBlocks renderBlocks) {
 
     }
 
